@@ -15,17 +15,13 @@ GLFWwindow* __cdecl hook_glfwCreateWindow(int width, int height, const char* tit
     return host_glfwCreateWindow(width, height, title, monitor, share);
 }
 
-void (_stdcall *host_CCDirector_drawScene)() = nullptr;
+void (_fastcall *host_CCDirector_drawScene)(CCDirector* _this) = nullptr;
 
-void _stdcall hook_CCDirector_drawScene() {
-    CCDirector* _this;
-    __asm mov _this, ecx;
-
+void _fastcall hook_CCDirector_drawScene(CCDirector* _this) {
     // Enable multisampling
     glEnable(GL_MULTISAMPLE);
 
-    __asm mov ecx, _this;
-    host_CCDirector_drawScene();
+    host_CCDirector_drawScene(_this);
 }
 
 bool mod::load() {
